@@ -36,11 +36,12 @@ export class TrackController {
   }
 
   @Put(':id')
+  @UsePipes(ValidationPipe)
   async update(
     @Param('id', new ParseUUIDPipe()) id: string, 
     @Body() updateTrackDto: UpdateTrackDto
   ) {
-    return await this.trackService.update(+id, updateTrackDto);
+    return await this.trackService.update(id, updateTrackDto);
   }
 
   @Delete(':id')

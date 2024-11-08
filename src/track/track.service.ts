@@ -24,8 +24,12 @@ export class TrackService {
     return found;
   }
 
-  async update(id: number, updateTrackDto: UpdateTrackDto) {
-    return `This action updates a #${id} track`;
+  async update(id: string, updateTrackDto: UpdateTrackDto) {
+    const updated = await this.trackRepository.update(id, updateTrackDto);
+    if (!updated) {
+      throw new NotFoundException(`Track with Id ${id} not found`);
+    }
+    return updated;
   }
 
   async remove(id: string) {

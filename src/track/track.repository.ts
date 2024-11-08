@@ -21,9 +21,10 @@ export class TrackRepository implements ITrackRepository {
     return this.tracks.get(id);
   }
 
-  async update(id: string, updateTrackDto: UpdateTrackDto): Promise<Track> {
+  async update(id: string, updateTrackDto: UpdateTrackDto): Promise<Track | undefined> {
     const found = this.tracks.get(id);
-    found.albumId = updateTrackDto.albumId;
+    if (!found) return;
+    Object.assign(found, updateTrackDto);
     return found;
   }
 
