@@ -5,7 +5,7 @@ import { Track } from "./track.interface";
 export interface ITrackRepository {
   findAll(): Promise<Track[]>;
   findById(id: string): Promise<Track | undefined>;
-  create(user: CreateTrackDto): Promise<Track>;
-  update(id: string, user: UpdateTrackDto): Promise<Track>;
+  create(createTrackDto: CreateTrackDto): Promise<Track>;
+  update(id: string, updateTrackDto: UpdateTrackDto): Promise<Track>;
   remove(id: string): Promise<void>;
 } 
