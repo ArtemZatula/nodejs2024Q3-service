@@ -27,7 +27,7 @@ export class TrackRepository implements ITrackRepository {
     return found;
   }
 
-  async remove(id: string): Promise<void> {
-    this.tracks.delete(id);
+  async remove(id: string): Promise<boolean> {
+    return this.tracks.delete(id);
   }
 }

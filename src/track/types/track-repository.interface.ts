@@ -7,5 +7,5 @@ export interface ITrackRepository {
   findById(id: string): Promise<Track | undefined>;
   create(createTrackDto: CreateTrackDto): Promise<Track>;
   update(id: string, updateTrackDto: UpdateTrackDto): Promise<Track>;
-  remove(id: string): Promise<void>;
+  remove(id: string): Promise<boolean>;
 } 

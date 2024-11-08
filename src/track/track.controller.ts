@@ -31,8 +31,8 @@ export class TrackController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.trackService.findOne(+id);
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.trackService.findOne(id);
   }
 
   @Put(':id')
