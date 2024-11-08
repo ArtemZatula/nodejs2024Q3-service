@@ -33,7 +33,7 @@ export class UserEntity {
     this.version++
   }
 
-  isPassEqual(newPassword: string): boolean {
-    return this.#password === newPassword;
+  isValidPassword(password: string): boolean {
+    return this.#password === password;
   }
 }

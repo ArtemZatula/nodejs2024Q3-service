@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './user.repository';
@@ -26,9 +26,9 @@ export class UserService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     await this.findById(id);
-    const isValidOldPassword = await this.userRepository.checkOldPassword(id, updateUserDto.oldPassword);
+    const isValidOldPassword = await this.userRepository.isValidPassword(id, updateUserDto.oldPassword);
     if (!isValidOldPassword) {
-      throw new BadRequestException('You typed invalid old password.')
+      throw new HttpException('You typed invalid old password. Please try again', HttpStatus.FORBIDDEN)
     }
     return this.userRepository.update(id, updateUserDto);
   }

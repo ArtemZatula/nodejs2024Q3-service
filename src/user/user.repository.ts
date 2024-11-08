@@ -43,8 +43,8 @@ export class UserRepository implements IUserRepository {
     return !this.users.some(user => user.login === login);
   }
 
-  async checkOldPassword(id: string, pass: string): Promise<boolean> {
+  async isValidPassword(id: string, pass: string): Promise<boolean> {
     const found = this.users.find(user => user.id === id);
-    return found.isPassEqual(pass);
+    return found.isValidPassword(pass);
   }
 }

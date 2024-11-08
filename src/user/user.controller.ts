@@ -3,13 +3,13 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   ParseUUIDPipe,
   HttpCode, 
   UsePipes,
-  ValidationPipe} from '@nestjs/common';
+  ValidationPipe,
+  Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -35,7 +35,7 @@ export class UserController {
     return await this.userService.findById(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @UsePipes(ValidationPipe)
   async updatePassword( 
     @Param('id', new ParseUUIDPipe()) id: string,
