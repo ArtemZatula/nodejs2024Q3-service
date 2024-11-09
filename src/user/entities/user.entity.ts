@@ -6,7 +6,7 @@ export class UserEntity {
   id = randomUUID();
   login: string;
   #password: string;
-  version = 0;
+  version = 1;
   createdAt: number;
   updatedAt: number;
 
@@ -30,7 +30,8 @@ export class UserEntity {
 
   updatePassword(newPassword: string): void {
     this.#password = newPassword;
-    this.version++
+    this.version++;
+    this.updatedAt = Date.now();
   }
 
   isValidPassword(password: string): boolean {
