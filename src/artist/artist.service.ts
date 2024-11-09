@@ -3,10 +3,14 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { ArtistRepository } from './artist.repository';
 import { Artist } from './types/artist.interface';
+import { AlbumRepository } from 'src/album/album.repository';
 
 @Injectable()
 export class ArtistService {
-  constructor(private artistRepository: ArtistRepository) {}
+  constructor(
+    private artistRepository: ArtistRepository,
+    private albumRepository: AlbumRepository,
+  ) {}
 
   async create(createArtistDto: CreateArtistDto) {
     return this.artistRepository.create(createArtistDto);
@@ -37,6 +41,7 @@ export class ArtistService {
     if (!deleted) {
       throw new NotFoundException(`Artist with Id ${id} not found`);
     }
+    await this.albumRepository.removeAlbumArtist(id);
     return deleted;
   }
 }

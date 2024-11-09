@@ -1,9 +1,11 @@
+import { Injectable } from "@nestjs/common";
 import { CreateAlbumDto } from "./dto/create-album.dto";
 import { UpdateAlbumDto } from "./dto/update-album.dto";
 import { AlbumEntity } from "./entities/album.entity"
 import { IAlbumRepository } from "./types/album-repository.interface";
 import { Album } from "./types/album.interface";
 
+@Injectable()
 export class AlbumRepository implements IAlbumRepository {
   private albums: Map<string, AlbumEntity> = new Map();
 
@@ -26,6 +28,14 @@ export class AlbumRepository implements IAlbumRepository {
     if (!found) return;
     Object.assign(found, updateAlbumDto);
     return found;
+  }
+
+  async removeAlbumArtist(artistId: string): Promise<void> {
+    for (const [ _, album ] of this.albums) {
+      if (album.artistId === artistId) {
+        album.artistId = null;
+      }
+    }
   }
 
   async remove(id: string): Promise<boolean> {

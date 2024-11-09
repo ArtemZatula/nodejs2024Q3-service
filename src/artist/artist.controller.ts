@@ -19,14 +19,17 @@ export class ArtistController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(
+    @Param('id', ParseUUIDPipe)
+    id: string
+  ) {
     return this.artistService.findOne(id);
   }
 
   @Put(':id')
   @UsePipes(ValidationPipe)
   async update(
-    @Param('id', new ParseUUIDPipe()) id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateArtistDto: UpdateArtistDto
   ) {
     return this.artistService.update(id, updateArtistDto);
@@ -34,7 +37,7 @@ export class ArtistController {
 
   @Delete(':id')
   @HttpCode(204)
-  async remove(@Param('id', new ParseUUIDPipe()) id: string) {
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.artistService.remove(id);
   }
 }
