@@ -36,6 +36,14 @@ export class TrackRepository implements ITrackRepository {
     }
   }
 
+  async removeTrackAlbum(albumId: string): Promise<void> {
+    for (const [ _, track ] of this.tracks) {
+      if (track.albumId === albumId) {
+        track.albumId = null;
+      }
+    }
+  }
+
   async remove(id: string): Promise<boolean> {
     return this.tracks.delete(id);
   }

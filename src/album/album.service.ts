@@ -2,10 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { AlbumRepository } from './album.repository';
+import { TrackRepository } from 'src/track/track.repository';
 
 @Injectable()
 export class AlbumService {
-  constructor(private albumRepository: AlbumRepository) {}
+  constructor(
+    private albumRepository: AlbumRepository,
+    private trackRepository: TrackRepository,
+  ) {}
 
   async create(createAlbumDto: CreateAlbumDto) {
     return this.albumRepository.create(createAlbumDto);
@@ -36,6 +40,7 @@ export class AlbumService {
     if (!deleted) {
       throw new NotFoundException(`Album with Id ${id} not found`);
     }
+    await this.trackRepository.removeTrackAlbum(id);
     return deleted;
   }
 }
