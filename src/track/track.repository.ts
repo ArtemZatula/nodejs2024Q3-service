@@ -28,6 +28,14 @@ export class TrackRepository implements ITrackRepository {
     return found;
   }
 
+  async removeTrackArtist(artistId: string): Promise<void> {
+    for (const [ _, track ] of this.tracks) {
+      if (track.artistId === artistId) {
+        track.artistId = null;
+      }
+    }
+  }
+
   async remove(id: string): Promise<boolean> {
     return this.tracks.delete(id);
   }

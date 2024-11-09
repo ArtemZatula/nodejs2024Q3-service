@@ -3,9 +3,10 @@ import { ArtistService } from './artist.service';
 import { ArtistController } from './artist.controller';
 import { ArtistRepository } from './artist.repository';
 import { AlbumModule } from 'src/album/album.module';
+import { TrackModule } from 'src/track/track.module';
 
 @Module({
-  imports: [AlbumModule],
+  imports: [AlbumModule, TrackModule],
   controllers: [ArtistController],
   providers: [ArtistService, ArtistRepository]
 })
