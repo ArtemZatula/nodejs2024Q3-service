@@ -5,6 +5,7 @@ import { ArtistRepository } from './artist.repository';
 import { Artist } from './types/artist.interface';
 import { AlbumRepository } from 'src/album/album.repository';
 import { TrackRepository } from 'src/track/track.repository';
+import { FavoriteRepository } from 'src/favorite/favorite.repository';
 
 @Injectable()
 export class ArtistService {
@@ -12,6 +13,7 @@ export class ArtistService {
     private artistRepository: ArtistRepository,
     private albumRepository: AlbumRepository,
     private trackRepository: TrackRepository,
+    private favoriteRepository: FavoriteRepository,
   ) {}
 
   async create(createArtistDto: CreateArtistDto) {
@@ -45,6 +47,7 @@ export class ArtistService {
     }
     await this.albumRepository.removeAlbumArtist(id);
     await this.trackRepository.removeTrackArtist(id);
+    await this.favoriteRepository.removeArtistFromFavs(id);
     return deleted;
   }
 }

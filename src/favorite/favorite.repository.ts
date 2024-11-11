@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class FavoriteRepository {
@@ -17,7 +17,7 @@ export class FavoriteRepository {
   }
 
   async removeTrackFromFavs(id: string) {
-    this.favs.tracks = this.favs.tracks.filter((track) => track.id === id);
+    this.favs.tracks = this.favs.tracks.filter((trackId) => trackId !== id);
   }
 
   async addArtistToFavs(id: string) {
@@ -25,7 +25,7 @@ export class FavoriteRepository {
   }
 
   async removeArtistFromFavs(id: string) {
-    this.favs.artists = this.favs.artists.filter((artist) => artist.id === id);
+    this.favs.artists = this.favs.artists.filter((artistId) => artistId !== id);
   }
 
   async addAlbumToFavs(id: string) {
@@ -33,6 +33,6 @@ export class FavoriteRepository {
   }
 
   async removeAlbumFromFavs(id: string) {
-    this.favs.albums = this.favs.albums.filter((album) => album.id === id);
+    this.favs.albums = this.favs.albums.filter((albumId) => albumId !== id);
   }
 }
