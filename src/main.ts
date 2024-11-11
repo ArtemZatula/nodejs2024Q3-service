@@ -1,8 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { getPort } from './helpers/env';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(4000);
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  await app.listen(getPort());
 }
 bootstrap();
