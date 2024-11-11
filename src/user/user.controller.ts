@@ -6,10 +6,11 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
-  HttpCode, 
+  HttpCode,
   UsePipes,
   ValidationPipe,
-  Put } from '@nestjs/common';
+  Put,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -31,20 +32,24 @@ export class UserController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<PublicUser> {
+  @UsePipes(ValidationPipe)
+  async findOne(
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<PublicUser> {
     return await this.userService.findById(id);
   }
 
   @Put(':id')
   @UsePipes(ValidationPipe)
-  async updatePassword( 
+  async updatePassword(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() updateUserDto: UpdateUserDto
+    @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
+  @UsePipes(ValidationPipe)
   @HttpCode(204)
   async remove(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.userService.remove(id);

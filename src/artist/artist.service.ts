@@ -11,7 +11,7 @@ export class ArtistService {
   constructor(
     private artistRepository: ArtistRepository,
     private albumRepository: AlbumRepository,
-    private trackRepository: TrackRepository
+    private trackRepository: TrackRepository,
   ) {}
 
   async create(createArtistDto: CreateArtistDto) {

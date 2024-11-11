@@ -31,7 +31,7 @@ export class AlbumRepository implements IAlbumRepository {
   }
 
   async removeAlbumArtist(artistId: string): Promise<void> {
-    for (const [ _, album ] of this.albums) {
+    for (const [_, album] of this.albums) {
       if (album.artistId === artistId) {
         album.artistId = null;
       }
