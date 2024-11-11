@@ -2,12 +2,13 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { FavoriteRepository } from './favorite.repository';
 import { AlbumRepository } from 'src/album/album.repository';
 import { TrackRepository } from 'src/track/track.repository';
+import { ArtistRepository } from 'src/artist/artist.repository';
 
 @Injectable()
 export class FavoriteService {
   constructor(
     private favoriteRepository: FavoriteRepository,
-    private artistRepository: AlbumRepository,
+    private artistRepository: ArtistRepository,
     private albumRepository: AlbumRepository,
     private trackRepository: TrackRepository,
   ) {}

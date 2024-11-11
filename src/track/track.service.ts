@@ -7,7 +7,7 @@ import { Track } from './types/track.interface';
 @Injectable()
 export class TrackService {
   constructor(private trackRepository: TrackRepository) {}
-  
+
   async create(createTrackDto: CreateTrackDto): Promise<Track> {
     return this.trackRepository.create(createTrackDto);
   }
