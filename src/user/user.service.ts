@@ -1,28 +1,42 @@
 import {
-  HttpException,
-  HttpStatus,
+  BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserRepository } from './user.repository';
 import { PublicUser } from './types/user.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<PublicUser> {
-    return await this.userRepository.create(createUserDto);
+    const user = this.userRepository.create({
+      login: createUserDto.login,
+      password: createUserDto.password,
+    });
+    try {
+      await this.userRepository.save(user);
+      return user;
+    } catch {
+      throw new InternalServerErrorException();
+    }
   }
 
   async findAll(): Promise<PublicUser[]> {
-    return await this.userRepository.findAll();
+    return await this.userRepository.find();
   }
 
   async findById(id: string): Promise<PublicUser> {
-    const found = await this.userRepository.findById(id);
+    const found = await this.userRepository.findOneBy({ id });
     if (!found) {
       throw new NotFoundException(`User with Id ${id} not found`);
     }
@@ -30,22 +44,23 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    await this.findById(id);
-    const isValidOldPassword = await this.userRepository.isValidPassword(
-      id,
-      updateUserDto.oldPassword,
-    );
-    if (!isValidOldPassword) {
-      throw new HttpException(
-        'You typed invalid old password. Please try again',
-        HttpStatus.FORBIDDEN,
-      );
+    const user = await this.userRepository.findOne({
+      where: { id },
+      select: ['password'],
+    });
+    if (!user) {
+      throw new NotFoundException('No User found');
     }
-    return this.userRepository.update(id, updateUserDto);
+    const isValidOldPassword = user.password === updateUserDto.oldPassword;
+    if (!isValidOldPassword) {
+      throw new BadRequestException('Invalid old password');
+    }
+    user.password = updateUserDto.newPassword;
+    user.version++;
+    await this.userRepository.save(user);
   }
 
-  async remove(id: string) {
-    await this.findById(id);
-    return await this.userRepository.remove(id);
+  async remove(id: string): Promise<void> {
+    await this.userRepository.delete(id);
   }
 }
