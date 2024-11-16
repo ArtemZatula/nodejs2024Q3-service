@@ -33,16 +33,14 @@ export class UserController {
 
   @Get(':id')
   @UsePipes(ValidationPipe)
-  async findOne(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<PublicUser> {
+  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<PublicUser> {
     return await this.userService.findById(id);
   }
 
   @Put(':id')
   @UsePipes(ValidationPipe)
   async updatePassword(
-    @Param('id', new ParseUUIDPipe()) id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.userService.update(id, updateUserDto);
@@ -51,7 +49,7 @@ export class UserController {
   @Delete(':id')
   @UsePipes(ValidationPipe)
   @HttpCode(204)
-  async remove(@Param('id', new ParseUUIDPipe()) id: string) {
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
     return await this.userService.remove(id);
   }
 }

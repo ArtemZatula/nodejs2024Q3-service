@@ -31,14 +31,14 @@ export class TrackController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return await this.trackService.findOne(id);
   }
 
   @Put(':id')
   @UsePipes(ValidationPipe)
   async update(
-    @Param('id', new ParseUUIDPipe()) id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
   ) {
     return await this.trackService.update(id, updateTrackDto);
@@ -46,7 +46,7 @@ export class TrackController {
 
   @Delete(':id')
   @HttpCode(204)
-  async remove(@Param('id', new ParseUUIDPipe()) id: string) {
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
     return await this.trackService.remove(id);
   }
 }
