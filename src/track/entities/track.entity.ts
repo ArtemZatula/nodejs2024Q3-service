@@ -1,5 +1,5 @@
-import { randomUUID } from "node:crypto";
-import { CreateTrackDto } from "../dto/create-track.dto";
+import { randomUUID } from 'node:crypto';
+import { CreateTrackDto } from '../dto/create-track.dto';
 
 export class TrackEntity {
   id = randomUUID();
@@ -12,6 +12,6 @@ export class TrackEntity {
     this.name = createTrackDto.name;
     this.artistId = createTrackDto.artistId;
     this.albumId = createTrackDto.albumId;
-    this.duration =  createTrackDto.duration;
+    this.duration = createTrackDto.duration;
   }
 }

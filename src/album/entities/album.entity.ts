@@ -1,5 +1,5 @@
-import { randomUUID } from "crypto";
-import { CreateAlbumDto } from "../dto/create-album.dto";
+import { randomUUID } from 'crypto';
+import { CreateAlbumDto } from '../dto/create-album.dto';
 
 export class AlbumEntity {
   id = randomUUID();

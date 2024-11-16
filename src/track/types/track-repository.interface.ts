@@ -1,6 +1,6 @@
-import { CreateTrackDto } from "../dto/create-track.dto";
-import { UpdateTrackDto } from "../dto/update-track.dto";
-import { Track } from "./track.interface";
+import { CreateTrackDto } from '../dto/create-track.dto';
+import { UpdateTrackDto } from '../dto/update-track.dto';
+import { Track } from './track.interface';
 
 export interface ITrackRepository {
   findAll(): Promise<Track[]>;
@@ -8,4 +8,4 @@ export interface ITrackRepository {
   create(createTrackDto: CreateTrackDto): Promise<Track>;
   update(id: string, updateTrackDto: UpdateTrackDto): Promise<Track>;
   remove(id: string): Promise<boolean>;
-} 
+}

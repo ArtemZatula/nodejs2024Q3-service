@@ -16,7 +16,7 @@ export class FavoriteService {
   async findAll() {
     const favs = await this.favoriteRepository.findAll();
 
-    const f = {
+    return {
       albums: await Promise.all(
         favs.albums.map((albumId) => this.albumRepository.findById(albumId)),
       ),
@@ -29,8 +29,6 @@ export class FavoriteService {
         favs.tracks.map((trackId) => this.trackRepository.findById(trackId)),
       ),
     };
-
-    return f;
   }
 
   async addTrackToFavs(id: string) {

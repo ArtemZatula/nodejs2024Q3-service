@@ -1,4 +1,3 @@
-
 import { Injectable } from '@nestjs/common';
 
 import { PublicUser } from './types/user.interface';
@@ -12,15 +11,15 @@ export class UserRepository implements IUserRepository {
   private users: UserEntity[] = [];
 
   async findAll(): Promise<PublicUser[]> {
-    return this.users.map(user => user.publicUser);
+    return this.users.map((user) => user.publicUser);
   }
 
   async findById(id: string): Promise<PublicUser | undefined> {
-    return this.users.find(user => user.id === id)?.publicUser;
+    return this.users.find((user) => user.id === id)?.publicUser;
   }
 
   async findByLogin(login: string): Promise<PublicUser | undefined> {
-    return this.users.find(user => user.login === login)?.publicUser;
+    return this.users.find((user) => user.login === login)?.publicUser;
   }
 
   async create(createUserDto: CreateUserDto): Promise<PublicUser> {
@@ -30,21 +29,21 @@ export class UserRepository implements IUserRepository {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<PublicUser> {
-    const found = this.users.find(user => user.id === id);
+    const found = this.users.find((user) => user.id === id);
     found.updatePassword(updateUserDto.newPassword);
     return found.publicUser;
   }
 
   async remove(id: string): Promise<void> {
-    this.users = this.users.filter(user => user.id !== id);
+    this.users = this.users.filter((user) => user.id !== id);
   }
 
   async isUniqueLogin(login): Promise<boolean> {
-    return !this.users.some(user => user.login === login);
+    return !this.users.some((user) => user.login === login);
   }
 
   async isValidPassword(id: string, pass: string): Promise<boolean> {
-    const found = this.users.find(user => user.id === id);
+    const found = this.users.find((user) => user.id === id);
     return found.isValidPassword(pass);
   }
 }

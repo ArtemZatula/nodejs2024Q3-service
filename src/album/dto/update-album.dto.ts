@@ -1,4 +1,4 @@
-import { IsOptional, IsPositive, IsString, IsUUID } from "class-validator";
+import { IsOptional, IsPositive, IsString, IsUUID } from 'class-validator';
 
 export class UpdateAlbumDto {
   @IsOptional()
@@ -11,5 +11,5 @@ export class UpdateAlbumDto {
 
   @IsOptional()
   @IsUUID()
-  artistId
+  artistId;
 }

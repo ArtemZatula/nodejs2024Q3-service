@@ -6,10 +6,6 @@ import { IsUniqueConstraint } from './validators/is-unique.validator';
 
 @Module({
   controllers: [UserController],
-  providers: [
-    UserService,
-    UserRepository,
-    IsUniqueConstraint,
-  ]
+  providers: [UserService, UserRepository, IsUniqueConstraint],
 })
 export class UserModule {}

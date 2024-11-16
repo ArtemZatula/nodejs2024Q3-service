@@ -4,7 +4,6 @@ import {
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  ValidationArguments
 } from 'class-validator';
 
 import { UserRepository } from '../user.repository';
@@ -18,13 +17,13 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
     return await this.userRepository.isUniqueLogin(login);
   }
 
-  defaultMessage(args: ValidationArguments) {
+  defaultMessage() {
     return 'Login $value already exists. Choose another one.';
   }
 }
 
 export function IsUnique(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,

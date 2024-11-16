@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { CreateAlbumDto } from "./dto/create-album.dto";
-import { UpdateAlbumDto } from "./dto/update-album.dto";
-import { AlbumEntity } from "./entities/album.entity"
-import { IAlbumRepository } from "./types/album-repository.interface";
-import { Album } from "./types/album.interface";
+import { Injectable } from '@nestjs/common';
+import { CreateAlbumDto } from './dto/create-album.dto';
+import { UpdateAlbumDto } from './dto/update-album.dto';
+import { AlbumEntity } from './entities/album.entity';
+import { IAlbumRepository } from './types/album-repository.interface';
+import { Album } from './types/album.interface';
 
 @Injectable()
 export class AlbumRepository implements IAlbumRepository {
