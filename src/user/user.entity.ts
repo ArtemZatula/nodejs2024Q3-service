@@ -15,7 +15,7 @@ export class User {
   @Column({ unique: true })
   login: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @VersionColumn({ default: 1 })
@@ -27,7 +27,7 @@ export class User {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  isValidPassword(password: string): boolean {
+  isValidOldPassword(password: string): boolean {
     return this.password === password;
   }
 }

@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -18,41 +19,36 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<PublicUser> {
-    const user = this.userRepository.create({
-      login: createUserDto.login,
-      password: createUserDto.password,
-    });
+  async create({ login, password }: CreateUserDto): Promise<PublicUser> {
     try {
-      await this.userRepository.save(user);
-      return user;
-    } catch {
+      const user = await this.userRepository.save({ login, password });
+      return this.getPublicUser(user);
+    } catch (error) {
+      if (error.code === '23505') {
+        throw new ConflictException('Login already exists');
+      }
       throw new InternalServerErrorException();
     }
   }
 
   async findAll(): Promise<PublicUser[]> {
-    return await this.userRepository.find();
+    return (await this.userRepository.find()).map(this.getPublicUser);
   }
 
   async findById(id: string): Promise<PublicUser> {
     const found = await this.userRepository.findOneBy({ id });
     if (!found) {
-      throw new NotFoundException(`User with Id ${id} not found`);
+      throw new NotFoundException(`User with Id = ${id} not found`);
     }
-    return found;
+    return this.getPublicUser(found);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      select: ['password'],
-    });
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<void> {
+    const user = await this.userRepository.findOneBy({ id });
     if (!user) {
-      throw new NotFoundException('No User found');
+      throw new NotFoundException(`User with Id = ${id} not found`);
     }
-    const isValidOldPassword = user.password === updateUserDto.oldPassword;
-    if (!isValidOldPassword) {
+    if (!user.isValidOldPassword(updateUserDto.oldPassword)) {
       throw new BadRequestException('Invalid old password');
     }
     user.password = updateUserDto.newPassword;
@@ -62,5 +58,11 @@ export class UserService {
 
   async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
+  }
+
+  private getPublicUser(user: User): PublicUser {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...publicUser } = user;
+    return publicUser;
   }
 }
