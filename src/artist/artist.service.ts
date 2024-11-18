@@ -3,7 +3,6 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { ArtistRepository } from './artist.repository';
 import { Artist } from './types/artist.interface';
-import { AlbumRepository } from 'src/album/album.repository';
 import { TrackRepository } from 'src/track/track.repository';
 import { FavoriteRepository } from 'src/favorite/favorite.repository';
 
@@ -11,7 +10,6 @@ import { FavoriteRepository } from 'src/favorite/favorite.repository';
 export class ArtistService {
   constructor(
     private artistRepository: ArtistRepository,
-    private albumRepository: AlbumRepository,
     private trackRepository: TrackRepository,
     private favoriteRepository: FavoriteRepository,
   ) {}
@@ -45,7 +43,7 @@ export class ArtistService {
     if (!deleted) {
       throw new NotFoundException(`Artist with Id ${id} not found`);
     }
-    await this.albumRepository.removeAlbumArtist(id);
+    // await this.albumRepository.removeAlbumArtist(id);
     await this.trackRepository.removeTrackArtist(id);
     await this.favoriteRepository.removeArtistFromFavs(id);
     return deleted;

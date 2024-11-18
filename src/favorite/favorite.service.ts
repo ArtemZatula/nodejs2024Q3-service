@@ -1,6 +1,5 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { FavoriteRepository } from './favorite.repository';
-import { AlbumRepository } from 'src/album/album.repository';
 import { TrackRepository } from 'src/track/track.repository';
 import { ArtistRepository } from 'src/artist/artist.repository';
 
@@ -9,7 +8,6 @@ export class FavoriteService {
   constructor(
     private favoriteRepository: FavoriteRepository,
     private artistRepository: ArtistRepository,
-    private albumRepository: AlbumRepository,
     private trackRepository: TrackRepository,
   ) {}
 
@@ -17,9 +15,9 @@ export class FavoriteService {
     const favs = await this.favoriteRepository.findAll();
 
     return {
-      albums: await Promise.all(
-        favs.albums.map((albumId) => this.albumRepository.findById(albumId)),
-      ),
+      // albums: await Promise.all(
+      // favs.albums.map((albumId) => this.albumRepository.findById(albumId)),
+      // ),
       artists: await Promise.all(
         favs.artists.map((artistId) =>
           this.artistRepository.findById(artistId),
@@ -56,10 +54,10 @@ export class FavoriteService {
   }
 
   async addAlbumToFavs(id: string) {
-    const found = await this.albumRepository.findById(id);
-    if (!found) {
-      throw new UnprocessableEntityException();
-    }
+    // const found = await this.albumRepository.findById(id);
+    // if (!found) {
+    //   throw new UnprocessableEntityException();
+    // }
     this.favoriteRepository.addAlbumToFavs(id);
   }
 
