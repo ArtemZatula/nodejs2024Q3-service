@@ -1,13 +1,11 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { FavoriteRepository } from './favorite.repository';
 import { TrackRepository } from 'src/track/track.repository';
-import { ArtistRepository } from 'src/artist/artist.repository';
 
 @Injectable()
 export class FavoriteService {
   constructor(
     private favoriteRepository: FavoriteRepository,
-    private artistRepository: ArtistRepository,
     private trackRepository: TrackRepository,
   ) {}
 
@@ -18,11 +16,11 @@ export class FavoriteService {
       // albums: await Promise.all(
       // favs.albums.map((albumId) => this.albumRepository.findById(albumId)),
       // ),
-      artists: await Promise.all(
-        favs.artists.map((artistId) =>
-          this.artistRepository.findById(artistId),
-        ),
-      ),
+      // artists: await Promise.all(
+      //   favs.artists.map((artistId) =>
+      //     this.artistRepository.findById(artistId),
+      //   ),
+      // ),
       tracks: await Promise.all(
         favs.tracks.map((trackId) => this.trackRepository.findById(trackId)),
       ),
@@ -42,11 +40,11 @@ export class FavoriteService {
   }
 
   async addArtistToFavs(id: string) {
-    const found = await this.artistRepository.findById(id);
-    if (!found) {
-      throw new UnprocessableEntityException();
-    }
-    this.favoriteRepository.addArtistToFavs(id);
+    // const found = await this.artistRepository.findById(id);
+    // if (!found) {
+    //   throw new UnprocessableEntityException();
+    // }
+    // this.favoriteRepository.addArtistToFavs(id);
   }
 
   async removeArtistFromFavs(id: string) {

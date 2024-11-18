@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Album } from 'src/album/album.entity';
+import { Artist } from 'src/artist/artist.entity';
 import { User } from 'src/user/user.entity';
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
@@ -9,6 +10,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   username: 'postgres',
   password: 'password',
   database: 'postgres',
-  entities: [User, Album],
+  entities: [User, Album, Artist],
   synchronize: true,
 };
