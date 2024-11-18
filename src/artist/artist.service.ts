@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { FavoriteRepository } from 'src/favorite/favorite.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Artist } from './artist.entity';
 import { Repository } from 'typeorm';
@@ -14,13 +13,13 @@ import { Repository } from 'typeorm';
 export class ArtistService {
   constructor(
     @InjectRepository(Artist)
-    private artistRepository: Repository<Artist>, // private trackRepository: TrackRepository, // private favoriteRepository: FavoriteRepository,
+    private artistRepository: Repository<Artist>,
   ) {}
 
   async create(createArtistDto: CreateArtistDto) {
     try {
       return await this.artistRepository.save(createArtistDto);
-    } catch (e) {
+    } catch {
       throw new InternalServerErrorException();
     }
   }
@@ -28,7 +27,7 @@ export class ArtistService {
   async findAll() {
     try {
       return await this.artistRepository.find();
-    } catch (e) {
+    } catch {
       throw new InternalServerErrorException();
     }
   }
@@ -50,8 +49,5 @@ export class ArtistService {
   async remove(id: string) {
     await this.findOne(id);
     await this.artistRepository.delete(id);
-    // await this.albumRepository.removeAlbumArtist(id);
-    // await this.trackRepository.removeTrackArtist(id);
-    // await this.favoriteRepository.removeArtistFromFavs(id);
   }
 }

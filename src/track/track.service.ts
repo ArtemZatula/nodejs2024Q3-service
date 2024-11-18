@@ -6,7 +6,6 @@ import {
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { ITrack } from './types/track.interface';
-import { FavoriteRepository } from 'src/favorite/favorite.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Track } from './track.entity';
 import { Repository } from 'typeorm';
@@ -16,8 +15,6 @@ export class TrackService {
   constructor(
     @InjectRepository(Track)
     private trackRepository: Repository<Track>,
-
-    private favoriteRepository: FavoriteRepository,
   ) {}
 
   async create(createTrackDto: CreateTrackDto): Promise<ITrack> {
@@ -53,6 +50,5 @@ export class TrackService {
   async remove(id: string) {
     await this.findOne(id);
     await this.trackRepository.delete(id);
-    // await this.favoriteRepository.removeTrackFromFavs(id);
   }
 }

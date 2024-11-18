@@ -3,8 +3,8 @@ export interface User {
   login: string;
   password: string;
   version: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: number;
+  updatedAt: number;
 }
 
-export type PublicUser = Omit<User, 'password'>;
+export type IPublicUser = Omit<User, 'password'>;

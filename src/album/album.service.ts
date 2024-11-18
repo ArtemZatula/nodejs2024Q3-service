@@ -5,8 +5,6 @@ import {
 } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-// import { TrackRepository } from 'src/track/track.repository';
-// import { FavoriteRepository } from 'src/favorite/favorite.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Album } from './album.entity';
 import { Repository } from 'typeorm';
@@ -50,8 +48,6 @@ export class AlbumService {
 
   async remove(id: string) {
     await this.findOne(id);
-    // await this.trackRepository.removeTrackAlbum(id);
-    // await this.favoriteRepository.removeAlbumFromFavs(id);
     return await this.albumRepository.delete(id);
   }
 }

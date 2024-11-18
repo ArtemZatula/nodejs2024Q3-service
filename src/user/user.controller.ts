@@ -13,7 +13,7 @@ import {
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { PublicUser } from './types/user.interface';
+import { IPublicUser } from './types/user.interface';
 
 @Controller('user')
 export class UserController {
@@ -25,12 +25,12 @@ export class UserController {
   }
 
   @Get()
-  async findAll(): Promise<PublicUser[]> {
+  async findAll(): Promise<IPublicUser[]> {
     return this.userService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<PublicUser> {
+  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<IPublicUser> {
     return await this.userService.findById(id);
   }
 
