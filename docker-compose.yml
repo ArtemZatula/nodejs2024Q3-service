@@ -1,9 +1,15 @@
 services:
   nest-app:
-    image: artemzatula/home-library-service
+    image: artemzatula/home-library-service:latest
     build: .
     ports:
       - "4000:4000"
+    restart: on-failure:7
+    networks:
+      - my-bridge
+    volumes:
+      - ./:/app
+      - /app/node_modules
     env_file:
       - .env
     depends_on:
@@ -13,8 +19,15 @@ services:
   db:
     image: postgres
     restart: always
+    networks:
+      - my-bridge
     volumes:
       - postgres-db:/var/lib/postgresql/data
 
 volumes:
   postgres-db:
+    driver: local
+
+networks:
+  my-bridge:
+    driver: bridge
