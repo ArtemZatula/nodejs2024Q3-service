@@ -15,8 +15,6 @@ services:
     restart: always
     volumes:
       - postgres-db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
 volumes:
   postgres-db:

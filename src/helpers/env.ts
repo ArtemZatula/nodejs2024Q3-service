@@ -2,3 +2,12 @@ import { config } from 'dotenv';
 config();
 
 export const getPort = () => process.env.PORT || 4000;
+
+export const getDbConfigs = () => ({
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT, 10) || 5432,
+  username: process.env.DB_USERNAME || 'postgres',
+  password: process.env.DB_PASSWORD || 'password',
+  database: process.env.DB_NAME || 'postgres',
+  synchronize: process.env.TYPEORM_SYNC === 'true',
+});
