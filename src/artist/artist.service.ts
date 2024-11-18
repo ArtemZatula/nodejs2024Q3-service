@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { TrackRepository } from 'src/track/track.repository';
 import { FavoriteRepository } from 'src/favorite/favorite.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Artist } from './artist.entity';
