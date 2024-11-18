@@ -7,9 +7,8 @@ import {
   Delete,
   ParseUUIDPipe,
   HttpCode,
-  UsePipes,
-  ValidationPipe,
   Put,
+  HttpStatus,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -21,7 +20,6 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @UsePipes(ValidationPipe)
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
   }
@@ -32,13 +30,11 @@ export class UserController {
   }
 
   @Get(':id')
-  @UsePipes(ValidationPipe)
   async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<PublicUser> {
     return await this.userService.findById(id);
   }
 
   @Put(':id')
-  @UsePipes(ValidationPipe)
   async updatePassword(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -47,8 +43,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  @UsePipes(ValidationPipe)
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     return await this.userService.remove(id);
   }

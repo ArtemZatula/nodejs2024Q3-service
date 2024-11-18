@@ -6,10 +6,9 @@ import {
   Param,
   Delete,
   Put,
-  ValidationPipe,
-  UsePipes,
   ParseUUIDPipe,
   HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
@@ -20,7 +19,6 @@ export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Post()
-  @UsePipes(ValidationPipe)
   async create(@Body() createArtistDto: CreateArtistDto) {
     return this.artistService.create(createArtistDto);
   }
@@ -31,7 +29,6 @@ export class ArtistController {
   }
 
   @Get(':id')
-  @UsePipes(ValidationPipe)
   async findOne(
     @Param('id', ParseUUIDPipe)
     id: string,
@@ -40,7 +37,6 @@ export class ArtistController {
   }
 
   @Put(':id')
-  @UsePipes(ValidationPipe)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateArtistDto: UpdateArtistDto,
@@ -49,8 +45,7 @@ export class ArtistController {
   }
 
   @Delete(':id')
-  @UsePipes(ValidationPipe)
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.artistService.remove(id);
   }

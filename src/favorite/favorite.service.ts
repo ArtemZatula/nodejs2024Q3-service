@@ -3,9 +3,7 @@ import { FavoriteRepository } from './favorite.repository';
 
 @Injectable()
 export class FavoriteService {
-  constructor(
-    private favoriteRepository: FavoriteRepository,
-  ) {}
+  constructor(private favoriteRepository: FavoriteRepository) {}
 
   async findAll() {
     const favs = await this.favoriteRepository.findAll();

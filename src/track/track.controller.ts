@@ -5,11 +5,10 @@ import {
   Body,
   Param,
   Delete,
-  ValidationPipe,
-  UsePipes,
   HttpCode,
   ParseUUIDPipe,
   Put,
+  HttpStatus,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
@@ -20,7 +19,6 @@ export class TrackController {
   constructor(private readonly trackService: TrackService) {}
 
   @Post()
-  @UsePipes(ValidationPipe)
   async create(@Body() createTrackDto: CreateTrackDto) {
     return await this.trackService.create(createTrackDto);
   }
@@ -36,7 +34,6 @@ export class TrackController {
   }
 
   @Put(':id')
-  @UsePipes(ValidationPipe)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
@@ -45,7 +42,7 @@ export class TrackController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     return await this.trackService.remove(id);
   }

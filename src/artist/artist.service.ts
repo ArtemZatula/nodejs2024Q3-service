@@ -14,9 +14,7 @@ import { Repository } from 'typeorm';
 export class ArtistService {
   constructor(
     @InjectRepository(Artist)
-    private artistRepository: Repository<Artist>,
-    // private trackRepository: TrackRepository,
-    // private favoriteRepository: FavoriteRepository,
+    private artistRepository: Repository<Artist>, // private trackRepository: TrackRepository, // private favoriteRepository: FavoriteRepository,
   ) {}
 
   async create(createArtistDto: CreateArtistDto) {

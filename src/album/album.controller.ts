@@ -7,9 +7,8 @@ import {
   Delete,
   ParseUUIDPipe,
   Put,
-  UsePipes,
-  ValidationPipe,
   HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
@@ -20,7 +19,6 @@ export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Post()
-  @UsePipes(ValidationPipe)
   async create(@Body() createAlbumDto: CreateAlbumDto) {
     return this.albumService.create(createAlbumDto);
   }
@@ -36,7 +34,6 @@ export class AlbumController {
   }
 
   @Put(':id')
-  @UsePipes(ValidationPipe)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateAlbumDto: UpdateAlbumDto,
@@ -45,7 +42,7 @@ export class AlbumController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.albumService.remove(id);
   }
