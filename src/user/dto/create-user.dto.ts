@@ -1,10 +1,8 @@
-import { IsNotEmpty, IsString } from "class-validator";
-import { IsUnique } from "../validators/is-unique.validator";
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
-  @IsUnique()
   login: string;
 
   @IsNotEmpty()

@@ -7,4 +7,3 @@ export class UpdateUserDto {
   @IsNotEmpty()
   newPassword: string;
 }
-

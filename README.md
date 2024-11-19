@@ -5,10 +5,22 @@
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
-## Downloading
+## Clone
 
 ```
-git clone {repository URL}
+git clone https://github.com/ArtemZatula/nodejs2024Q3-service.git
+```
+
+## Navigate to the project directory:
+
+```
+cd nodejs2024Q3-service
+```
+
+## Switch to branch:
+
+```
+git checkout containerization-db
 ```
 
 ## Installing NPM modules
@@ -17,10 +29,25 @@ git clone {repository URL}
 npm install
 ```
 
+## Env configuration:
+
+add `.env` file:
+
+```
+PORT=4000
+NODE_ENV=development
+DB_HOST=db
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=password
+DB_NAME=postgres
+TYPEORM_SYNC=true
+```
+
 ## Running application
 
 ```
-npm start
+docker-compose up --build
 ```
 
 After starting the app on port (4000 as default) you can open

@@ -4,10 +4,9 @@ import {
   Post,
   Param,
   Delete,
-  ValidationPipe,
-  UsePipes,
   ParseUUIDPipe,
   HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
 
@@ -16,40 +15,34 @@ export class FavoriteController {
   constructor(private readonly favoriteService: FavoriteService) {}
 
   @Post('/track/:id')
-  @UsePipes(ValidationPipe)
   async addTrackToFavs(@Param('id', ParseUUIDPipe) id: string) {
     return this.favoriteService.addTrackToFavs(id);
   }
 
   @Delete('/track/:id')
-  @UsePipes(ValidationPipe)
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async removeTrackFromFavs(@Param('id', ParseUUIDPipe) id: string) {
     return this.favoriteService.removeTrackFromFavs(id);
   }
 
   @Post('/artist/:id')
-  @UsePipes(ValidationPipe)
   async addArtistToFavs(@Param('id', ParseUUIDPipe) id: string) {
     return this.favoriteService.addArtistToFavs(id);
   }
 
   @Delete('/artist/:id')
-  @UsePipes(ValidationPipe)
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async removeArtistFromFavs(@Param('id', ParseUUIDPipe) id: string) {
     return this.favoriteService.removeArtistFromFavs(id);
   }
 
   @Post('/album/:id')
-  @UsePipes(ValidationPipe)
   async addAlbumToFavs(@Param('id', ParseUUIDPipe) id: string) {
     return this.favoriteService.addAlbumToFavs(id);
   }
 
   @Delete('/album/:id')
-  @UsePipes(ValidationPipe)
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async removeAlbumFromFavs(@Param('id', ParseUUIDPipe) id: string) {
     return this.favoriteService.removeAlbumFromFavs(id);
   }

@@ -1,47 +1,54 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { TrackRepository } from './track.repository';
-import { Track } from './types/track.interface';
-import { FavoriteRepository } from 'src/favorite/favorite.repository';
+import { ITrack } from './types/track.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Track } from './track.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TrackService {
   constructor(
-    private trackRepository: TrackRepository,
-    private favoriteRepository: FavoriteRepository,
+    @InjectRepository(Track)
+    private trackRepository: Repository<Track>,
   ) {}
 
-  async create(createTrackDto: CreateTrackDto): Promise<Track> {
-    return this.trackRepository.create(createTrackDto);
+  async create(createTrackDto: CreateTrackDto): Promise<ITrack> {
+    try {
+      return await this.trackRepository.save(createTrackDto);
+    } catch (e) {
+      throw new InternalServerErrorException(e);
+    }
   }
 
-  async findAll(): Promise<Track[]> {
-    return this.trackRepository.findAll();
+  async findAll(): Promise<ITrack[]> {
+    try {
+      return await this.trackRepository.find();
+    } catch (e) {
+      throw new InternalServerErrorException(e);
+    }
   }
 
-  async findOne(id: string): Promise<Track> {
-    const found = await this.trackRepository.findById(id);
-    if (!found) {
+  async findOne(id: string): Promise<ITrack> {
+    const track = await this.trackRepository.findOneBy({ id });
+    if (!track) {
       throw new NotFoundException(`Track with Id ${id} not found`);
     }
-    return found;
+    return track;
   }
 
   async update(id: string, updateTrackDto: UpdateTrackDto) {
-    const updated = await this.trackRepository.update(id, updateTrackDto);
-    if (!updated) {
-      throw new NotFoundException(`Track with Id ${id} not found`);
-    }
-    return updated;
+    const track = await this.findOne(id);
+    Object.assign(track, updateTrackDto);
+    return await this.trackRepository.save(track);
   }
 
   async remove(id: string) {
-    const deleted = await this.trackRepository.remove(id);
-    if (!deleted) {
-      throw new NotFoundException(`Track with Id ${id} not found`);
-    }
-    await this.favoriteRepository.removeTrackFromFavs(id);
-    return deleted;
+    await this.findOne(id);
+    await this.trackRepository.delete(id);
   }
 }
