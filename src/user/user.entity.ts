@@ -1,3 +1,5 @@
+import { compare, hash } from 'bcrypt';
+import { getSaltRounds } from 'src/helpers/env';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -27,7 +29,11 @@ export class User {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  isValidOldPassword(password: string): boolean {
-    return this.password === password;
+  async validatePassword(password: string): Promise<boolean> {
+    return await compare(password, this.password);
+  }
+
+  async hashPassword(password: string): Promise<string> {
+    return await hash(password, getSaltRounds());
   }
 }

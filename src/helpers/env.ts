@@ -11,3 +11,7 @@ export const getDbConfigs = () => ({
   database: process.env.DB_NAME || 'postgres',
   synchronize: process.env.TYPEORM_SYNC === 'true',
 });
+
+export const getJwtSecret = () => process.env.JWT_SECRET_KEY || 'my_secret';
+
+export const getSaltRounds = () => parseInt(process.env.CRYPT_SALT || '10', 10);

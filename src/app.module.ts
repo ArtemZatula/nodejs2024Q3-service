@@ -8,15 +8,17 @@ import { ArtistModule } from './artist/artist.module';
 import { AlbumModule } from './album/album.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { typeOrmConfig } from './config/typeorm.config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    TypeOrmModule.forRoot(typeOrmConfig),
     UserModule,
     TrackModule,
     ArtistModule,
     AlbumModule,
     FavoriteModule,
-    TypeOrmModule.forRoot(typeOrmConfig),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
