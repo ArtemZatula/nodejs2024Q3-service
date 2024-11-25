@@ -23,3 +23,5 @@ export const getRefreshSecret = () =>
 
 export const getRefreshExpiryTime = () =>
   process.env.TOKEN_REFRESH_EXPIRE_TIME || '1h';
+
+export const getLogLevel = () => parseInt(process.env.LOG_LEVEL || '1', 1);
