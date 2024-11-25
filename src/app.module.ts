@@ -9,6 +9,7 @@ import { AlbumModule } from './album/album.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { typeOrmConfig } from './config/typeorm.config';
 import { AuthModule } from './auth/auth.module';
+import { LoggingModule } from './logging/logging.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
     AlbumModule,
     FavoriteModule,
     AuthModule,
+    LoggingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
