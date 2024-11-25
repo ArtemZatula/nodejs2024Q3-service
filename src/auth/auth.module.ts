@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/user.entity';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { getJwtSecret } from 'src/helpers/env';
+import { getJwtSecret, getTokenExpiryTime } from 'src/helpers/env';
 
 @Module({
   imports: [
@@ -12,7 +12,7 @@ import { getJwtSecret } from 'src/helpers/env';
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: getJwtSecret(),
-        signOptions: { expiresIn: '24h' },
+        signOptions: { expiresIn: getTokenExpiryTime() },
       }),
     }),
   ],

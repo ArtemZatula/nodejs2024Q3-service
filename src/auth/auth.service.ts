@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   UnauthorizedException,
@@ -9,8 +10,15 @@ import { Repository } from 'typeorm';
 import { AuthCredsDto } from './dto/auth-creds.dto';
 import { User } from 'src/user/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { getJwtSecret, getSaltRounds } from 'src/helpers/env';
+import {
+  getJwtSecret,
+  getRefreshExpiryTime,
+  getRefreshSecret,
+  getSaltRounds,
+  getTokenExpiryTime,
+} from 'src/helpers/env';
 import { hash } from 'bcrypt';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Injectable()
 export class AuthService {
@@ -42,19 +50,45 @@ export class AuthService {
     });
     const valid = user && user.validatePassword(authCredsDto.password);
     if (valid) {
-      return {
-        accessToken: await this.jwtService.signAsync(
-          {
-            login: authCredsDto.login,
-            userId: user.id,
-          },
-          {
-            secret: getJwtSecret(),
-          },
-        ),
-      };
+      return await this.getTokens(user);
     } else {
       throw new UnauthorizedException('Invalid credentials');
     }
+  }
+
+  async refreshToken({ refreshToken }: RefreshTokenDto) {
+    if (!refreshToken) {
+      throw new UnauthorizedException();
+    }
+    try {
+      const { userId: id } = await this.jwtService.verifyAsync(refreshToken, {
+        secret: getRefreshSecret(),
+      });
+      const user = await this.userRepository.findOneBy({ id });
+      if (user) {
+        return await this.getTokens(user);
+      }
+    } catch {
+      throw new ForbiddenException();
+    }
+  }
+
+  private async getTokens({ login, id: userId }) {
+    return {
+      accessToken: await this.jwtService.signAsync(
+        { login, userId },
+        {
+          secret: getJwtSecret(),
+          expiresIn: getTokenExpiryTime(),
+        },
+      ),
+      refreshToken: await this.jwtService.signAsync(
+        { login, userId },
+        {
+          secret: getRefreshSecret(),
+          expiresIn: getRefreshExpiryTime(),
+        },
+      ),
+    };
   }
 }
