@@ -36,12 +36,29 @@ add `.env` file:
 ```
 PORT=4000
 NODE_ENV=development
+
+CRYPT_SALT=10
+JWT_SECRET_KEY=secret123123
+JWT_SECRET_REFRESH_KEY=secret123123
+TOKEN_EXPIRE_TIME=1h
+TOKEN_REFRESH_EXPIRE_TIME=24h
+
+LOG_LEVEL=0
+
 DB_HOST=db
 DB_PORT=5432
 DB_USERNAME=postgres
 DB_PASSWORD=password
 DB_NAME=postgres
 TYPEORM_SYNC=true
+```
+
+add `.env.db` file:
+
+```
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_DB=postgres
 ```
 
 ## Running application
