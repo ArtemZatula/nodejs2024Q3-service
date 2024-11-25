@@ -19,6 +19,8 @@ services:
   db:
     image: postgres
     restart: always
+    env_file:
+      - .env.pg
     networks:
       - my-bridge
     volumes:

@@ -11,6 +11,8 @@ import { IPublicUser } from './types/user.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
+import { getSaltRounds } from 'src/helpers/env';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -19,10 +21,14 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async create({ login, password }: CreateUserDto): Promise<IPublicUser> {
+  async create(authCredsDto: CreateUserDto): Promise<IPublicUser> {
     try {
-      const user = await this.userRepository.save({ login, password });
-      return this.getPublicUser(user);
+      const user = {
+        login: authCredsDto.login,
+        password: await hash(authCredsDto.password, getSaltRounds()),
+      };
+      const created = await this.userRepository.save(user);
+      return this.getPublicUser(created);
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('Login already exists');
@@ -50,10 +56,11 @@ export class UserService {
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<IPublicUser> {
     const user = await this.findUserById(id);
-    if (!user.isValidOldPassword(updateUserDto.oldPassword)) {
+    const isValid = await user.validatePassword(updateUserDto.oldPassword);
+    if (!isValid) {
       throw new ForbiddenException('Invalid old password');
     }
-    user.password = updateUserDto.newPassword;
+    user.password = await user.hashPassword(updateUserDto.newPassword);
     user.version++;
     try {
       const saved = await this.userRepository.save(user);

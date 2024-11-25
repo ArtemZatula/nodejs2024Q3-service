@@ -9,6 +9,7 @@ import { Favorite } from './favorite.entity';
 import { Track } from 'src/track/track.entity';
 import { Artist } from 'src/artist/artist.entity';
 import { Album } from 'src/album/album.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { Album } from 'src/album/album.entity';
     forwardRef(() => TrackModule),
     forwardRef(() => ArtistModule),
     TypeOrmModule.forFeature([Album, Artist, Track, Favorite]),
+    AuthModule,
   ],
   controllers: [FavoriteController],
   providers: [FavoriteService],
